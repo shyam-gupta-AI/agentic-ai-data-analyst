@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+
 
 # Day 4 Enhancements - Modular Utilities
 from utils.prompts import SYSTEM_PROMPT
@@ -11,6 +11,10 @@ from utils.data_cleaning import clean_data
 
 # Day 5 Enhancement - AI Insights Generator Import
 from utils.insights import generate_basic_insights
+
+# Day 7 Enhancement - Visualization Module Import
+from utils.charts import show_visualizations
+
 
 # Page Configuration
 st.set_page_config(
@@ -94,53 +98,12 @@ if uploaded_file is not None:
         })
     )
 
-    # Day 5 Enhancement - Cleaned Numeric Column Detection
-    numeric_columns = cleaned_df.select_dtypes(
-        include=['number']
-    ).columns
+    # ==========================================================
+    # Day 7 Enhancement - Interactive Visualization Dashboard
+    # ==========================================================
 
-    if len(numeric_columns) > 0:
+    show_visualizations(cleaned_df)
 
-        st.subheader("Interactive Visualization")
-
-        # Column Selection
-        selected_column = st.selectbox(
-            "Select Numeric Column",
-            numeric_columns
-        )
-
-        # Chart Type Selection
-        chart_type = st.selectbox(
-            "Select Chart Type",
-            ["Histogram", "Box Plot"]
-        )
-
-        # Histogram
-        if chart_type == "Histogram":
-
-            # Day 5 Enhancement - Interactive Histogram Visualization
-            fig = px.histogram(
-                cleaned_df,
-                x=selected_column,
-                title=f"Distribution of {selected_column}"
-            )
-
-            st.plotly_chart(fig, use_container_width=True)
-
-        # Box Plot
-        elif chart_type == "Box Plot":
-
-            # Day 5 Enhancement - Interactive Box Plot Visualization
-            fig = px.box(
-                cleaned_df,
-                y=selected_column,
-                title=f"Box Plot of {selected_column}"
-            )
-
-            st.plotly_chart(fig, use_container_width=True)
-
-    else:
-        st.warning("No numeric columns found in dataset.")
 
     # Day 5 Enhancement - Download Cleaned Dataset
 
